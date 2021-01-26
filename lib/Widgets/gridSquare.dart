@@ -31,14 +31,48 @@ class _GridSquareState extends State<GridSquare> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    if (widget._node.isWall) {
+      return Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: Theme.of(context).primaryColor,
+              border: Border.all(color: Theme.of(context).primaryColor)),
+          width: 35,
+          height: 35);
+    } else if (widget._node.isStart) {
+      return Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
-            color: widget._node.isWall
-                ? Theme.of(context).primaryColor
-                : Colors.white,
+            color: Theme.of(context).primaryColor,
             border: Border.all(color: Theme.of(context).primaryColor)),
         width: 35,
-        height: 35);
+        height: 35,
+        child: Icon(
+          Icons.flag,
+          color: Colors.green[600],
+        ),
+      );
+    } else if (widget._node.isFinish) {
+      return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color: Theme.of(context).primaryColor,
+            border: Border.all(color: Theme.of(context).primaryColor)),
+        width: 35,
+        height: 35,
+        child: Icon(
+          Icons.flag,
+          color: Colors.red[600],
+        ),
+      );
+    } else {
+      return Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: Colors.white,
+              border: Border.all(color: Theme.of(context).primaryColor)),
+          width: 35,
+          height: 35);
+    }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:path_finder/Model/addMode.dart';
 import 'package:path_finder/Model/node.dart';
 import 'package:path_finder/Widgets/gridSquare.dart';
+import 'package:provider/provider.dart';
 
 class Grid extends StatefulWidget {
   Grid({Key key}) : super(key: key);
@@ -49,8 +51,23 @@ class _GridState extends State<Grid> {
                     (j) => GestureDetector(
                       child: GridSquare(node: board[i][j], i: i, j: j),
                       onTap: () {
-                        board[i][j].changeWall();
-                        walls.add(board[i][j]);
+                        final String mode = context.read<AddModel>().addMode;
+                        switch (mode) {
+                          case "wall":
+                            board[i][j].changeWall();
+                            walls.add(board[i][j]);
+                            break;
+                          case "start":
+                            if (start != null) start.clear();
+                            board[i][j].setStart();
+                            start = board[i][j];
+                            break;
+                          case "finish":
+                            if (finish != null) finish.clear();
+                            board[i][j].setFinish();
+                            finish = board[i][j];
+                            break;
+                        }
                       },
                     ),
                   ),
