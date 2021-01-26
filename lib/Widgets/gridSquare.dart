@@ -34,8 +34,10 @@ class _GridSquareState extends State<GridSquare> {
     return Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
-            color: widget._node.isWall ? Colors.black : Colors.white,
-            border: Border.all(color: Colors.purple[200])),
+            color: widget._node.isWall
+                ? Theme.of(context).primaryColor
+                : Colors.white,
+            border: Border.all(color: Theme.of(context).primaryColor)),
         width: 35,
         height: 35);
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:path_finder/Model/addMode.dart';
 import 'package:path_finder/Widgets/circularButton.dart';
+import 'package:provider/provider.dart';
 import '../Widgets/grid.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -27,11 +29,14 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
-        body: Stack(
-          children: [
-            Grid(),
-            FAB(),
-          ],
+        body: ChangeNotifierProvider(
+          create: (_) => AddModel(),
+          child: Stack(
+            children: [
+              Grid(),
+              FAB(),
+            ],
+          ),
         ));
   }
 }

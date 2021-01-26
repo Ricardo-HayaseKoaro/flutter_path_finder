@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:path_finder/Model/addMode.dart';
+import 'package:provider/provider.dart';
 
 class FAB extends StatefulWidget {
   const FAB({Key key}) : super(key: key);
@@ -17,6 +19,24 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
   double getRadiansFromDegree(double degree) {
     double unitRadian = 57.295779513;
     return degree / unitRadian;
+  }
+
+  // ignore: missing_return
+  Icon _getIconButtonMode(String mode) {
+    switch (mode) {
+      case "start":
+        return Icon(Icons.flag, color: Colors.green[600]);
+        break;
+      case "finish":
+        return Icon(Icons.flag, color: Colors.red[600]);
+        break;
+      case "wall":
+        return Icon(Icons.view_column, color: Colors.white);
+        break;
+      default:
+        return Icon(Icons.add, color: Colors.white);
+        break;
+    }
   }
 
   @override
@@ -47,7 +67,7 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0),
     ]).animate(animationController);
-    rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
+    rotationAnimation = Tween<double>(begin: 360.0, end: 0.0).animate(
         CurvedAnimation(parent: animationController, curve: Curves.easeOut));
     super.initState();
     animationController.addListener(() {
@@ -88,12 +108,10 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
                         color: Theme.of(context).primaryColor,
                         width: 50,
                         height: 50,
-                        icon: Icon(
-                          Icons.flag,
-                          color: Colors.white,
-                        ),
+                        icon: _getIconButtonMode("start"),
                         onClick: () {
-                          print('First Button');
+                          print('Start Mode');
+                          context.read<AddModel>().setModeStart();
                         },
                       ),
                     ),
@@ -110,12 +128,10 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
                         color: Theme.of(context).primaryColor,
                         width: 50,
                         height: 50,
-                        icon: Icon(
-                          Icons.place,
-                          color: Colors.white,
-                        ),
+                        icon: _getIconButtonMode("finish"),
                         onClick: () {
-                          print('Second button');
+                          print('Finish Mode');
+                          context.read<AddModel>().setModeFinish();
                         },
                       ),
                     ),
@@ -132,12 +148,10 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
                         color: Theme.of(context).primaryColor,
                         width: 50,
                         height: 50,
-                        icon: Icon(
-                          Icons.clear,
-                          color: Colors.white,
-                        ),
+                        icon: _getIconButtonMode("wall"),
                         onClick: () {
-                          print('Third Button');
+                          print('Wall Mode');
+                          context.read<AddModel>().setModeWall();
                         },
                       ),
                     ),
@@ -150,9 +164,8 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
                       color: Theme.of(context).primaryColor,
                       width: 60,
                       height: 60,
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.white,
+                      icon: _getIconButtonMode(
+                        context.watch<AddModel>().addMode,
                       ),
                       onClick: () {
                         if (animationController.isCompleted) {
