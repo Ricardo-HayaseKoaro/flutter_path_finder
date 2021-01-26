@@ -65,14 +65,26 @@ class _GridSquareState extends State<GridSquare> {
           color: Colors.red[600],
         ),
       );
-    } else {
-      return Container(
+    } else if (widget._node.isPath) {
+      return AnimatedContainer(
+          duration: Duration(milliseconds: 1000),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(4)),
-              color: Colors.white,
+              color: Colors.yellow,
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
-          height: 35);
+          height: 35,
+          child: Text(widget._node.val.toString() ?? ""));
+    } else {
+      return AnimatedContainer(
+        duration: Duration(milliseconds: 1000),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color: widget._node.visited ? Colors.red : Colors.white,
+            border: Border.all(color: Theme.of(context).primaryColor)),
+        width: 35,
+        height: 35,
+      );
     }
   }
 }
