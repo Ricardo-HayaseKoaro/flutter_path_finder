@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_finder/Model/addMode.dart';
 import 'package:path_finder/Model/node.dart';
+import 'package:path_finder/Model/play.dart';
 import 'package:path_finder/Widgets/gridSquare.dart';
 import 'package:provider/provider.dart';
 
@@ -69,6 +70,9 @@ class _GridState extends State<Grid> {
                             break;
                         }
                       },
+                      onLongPress: () {
+                        clearBoard();
+                      },
                     ),
                   ),
                 ),
@@ -93,7 +97,7 @@ class _GridState extends State<Grid> {
     for (var node in walls) {
       node.clear();
     }
-    start.clear();
-    finish.clear();
+    if (start != null) start.clear();
+    if (finish != null) finish.clear();
   }
 }
