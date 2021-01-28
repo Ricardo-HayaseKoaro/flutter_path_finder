@@ -59,7 +59,13 @@ class _GridState extends State<Grid> {
                   children: List.generate(
                     columnCount,
                     (j) => GestureDetector(
-                      child: GridSquare(node: board[i][j], i: i, j: j),
+                      child: GridSquare(
+                        node: board[i][j],
+                        i: i,
+                        j: j,
+                        setStart: setStart,
+                        setFinish: setFinish,
+                      ),
                       onTap: () {
                         final String mode = context.read<AddModel>().addMode;
                         switch (mode) {
@@ -68,13 +74,13 @@ class _GridState extends State<Grid> {
                             walls.add(board[i][j]);
                             break;
                           case "start":
-                            if (start != null) start.clear();
-                            board[i][j].setStart();
+                            if (start != null) start.setStart(false);
+                            board[i][j].setStart(true);
                             start = board[i][j];
                             break;
                           case "finish":
-                            if (finish != null) finish.clear();
-                            board[i][j].setFinish();
+                            if (finish != null) finish.setFinish(false);
+                            board[i][j].setFinish(true);
                             finish = board[i][j];
                             break;
                         }
@@ -103,10 +109,16 @@ class _GridState extends State<Grid> {
       print("finish null");
       return;
     }
-    bfsAux(start).then((finishNode) => _bfsShortestPath(finishNode));
+    bfsAux(start).then((finishNode) async {
+      await Future.delayed(Duration(milliseconds: 400));
+      _bfsShortestPath(finishNode);
+    });
   }
 
   Future<Node> bfsAux(Node node) async {
+    // Clear visited nodes
+    _clearVisitedNodes();
+
     //Create queueu and add start node
     Queue queue = Queue();
     queue.add(node);
@@ -157,6 +169,12 @@ class _GridState extends State<Grid> {
 
   //Find the shortest path from finish node to start node
   void _bfsShortestPath(Node node) async {
+    //Check if could find the finish node
+    if (node == null) {
+      print("Coulnd find the shortest path");
+      return;
+    }
+
     // Base case
     if (node.isStart) {
       return;
@@ -189,12 +207,26 @@ class _GridState extends State<Grid> {
     visitedClearAux = List();
   }
 
+  setStart(Node node) {
+    this.start = node;
+  }
+
+  setFinish(Node node) {
+    this.finish = node;
+  }
+
+  void _clearVisitedNodes() {
+    for (var node in visitedClearAux) {
+      if (!node.isStart && !node.isFinish) node.clear();
+    }
+  }
+
   void clearBoard() {
     for (var node in walls) {
-      node.clear();
+      node.fullClear();
     }
     for (var node in visitedClearAux) {
-      node.clear();
+      node.fullClear();
     }
   }
 }

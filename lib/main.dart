@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Path Finder',
       theme: ThemeData(
-        primaryColor: Colors.deepPurple[900],
+        primaryColor: Color(0xFF5900b3),
         primaryColorDark: Colors.black,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

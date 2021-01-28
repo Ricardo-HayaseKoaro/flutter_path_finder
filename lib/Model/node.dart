@@ -26,16 +26,18 @@ class Node extends ChangeNotifier {
     notifyListeners();
   }
 
-  setFinish() {
-    this.isFinish = true;
+  setFinish(bool finish) {
+    this.visited = false;
+    this.isFinish = finish;
     this.isStart = false;
     this.isWall = false;
     notifyListeners();
   }
 
-  setStart() {
+  setStart(bool start) {
+    this.visited = false;
     this.isFinish = false;
-    this.isStart = true;
+    this.isStart = start;
     this.isWall = false;
     notifyListeners();
   }
@@ -52,9 +54,14 @@ class Node extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Do not clear walls
   clear() {
-    this.isFinish = false;
-    this.isStart = false;
+    this.isPath = false;
+    this.visited = false;
+    this.val = 0;
+  }
+
+  fullClear() {
     this.isWall = false;
     this.val = 0;
     this.visited = false;
