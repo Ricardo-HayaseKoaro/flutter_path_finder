@@ -15,7 +15,7 @@ class BFS {
       // Create shortes path in grid
       Node aux = predecessors[board.finish];
       while (aux != null) {
-        aux.setPath();
+        if (aux != board.finish && aux != board.start) aux.setPath();
         aux = predecessors[aux];
       }
     });

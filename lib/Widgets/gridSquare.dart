@@ -52,7 +52,11 @@ class _GridSquareState extends State<GridSquare> {
         },
         childWhenDragging: Container(
           decoration: BoxDecoration(
-              color: widget._node.visited ? Colors.black : Color(0xFF000066),
+              color: widget._node.isPath
+                  ? Color(0xFF00b38f)
+                  : widget._node.visited
+                      ? Colors.black
+                      : Color(0xFF000066),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
@@ -95,8 +99,11 @@ class _GridSquareState extends State<GridSquare> {
         },
         childWhenDragging: Container(
           decoration: BoxDecoration(
-              color:
-                  widget._node.visited ? Color(0xFF00b38f) : Color(0xFF000066),
+              color: widget._node.isPath
+                  ? Color(0xFF00b38f)
+                  : widget._node.visited
+                      ? Colors.black
+                      : Color(0xFF000066),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
@@ -150,13 +157,17 @@ class _GridSquareState extends State<GridSquare> {
             widget._node != context.read<Board>().finish &&
             widget._node != context.read<Board>().start) {
           dynamic node = value.data;
+          node.visited = false;
+          node.clear();
           if (node.isStart) {
             widget.setStart(widget._node);
+            node.visited = false;
             context.read<Board>().startPathFinding();
           }
           if (node.isFinish) {
             // Dont set isFinish, isFinish is used for UI purposes only, if set will bug
             widget.setFinish(widget._node);
+            node.visited = false;
             context.read<Board>().startPathFinding();
           }
         }
