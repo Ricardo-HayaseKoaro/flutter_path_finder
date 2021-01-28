@@ -20,7 +20,7 @@ class CustomAppBar extends AppBar {
                 ),
               ),
               Text(
-                "BFS Algorythm",
+                "BFS Algorithm",
                 style: TextStyle(color: Colors.white),
               ),
             ],

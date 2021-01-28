@@ -12,13 +12,19 @@ class BFS {
   Future<void> startBFS() async {
     print("BFS");
     await _bfsAux(board.start).then((predecessors) {
-      // Create shortes path in grid
+      _showPath(predecessors);
+    });
+  }
+
+  Future<void> _showPath(predecessors) {
+    // Create shortes path in grid
+    if (board.finish != null) {
       Node aux = predecessors[board.finish];
       while (aux != null) {
         if (aux != board.finish && aux != board.start) aux.setPath();
         aux = predecessors[aux];
       }
-    });
+    }
   }
 
   Future<HashMap<Node, Node>> _bfsAux(Node node) async {

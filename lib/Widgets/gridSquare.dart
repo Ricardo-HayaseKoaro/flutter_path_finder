@@ -172,36 +172,20 @@ class _GridSquareState extends State<GridSquare> {
           }
         }
       }, builder: (context, candidates, rejects) {
-        if (widget._node.isWall) {
-          return Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  border: Border.all(color: Theme.of(context).primaryColor)),
-              width: 35,
-              height: 35);
-        } else if (widget._node.isPath) {
-          return AnimatedContainer(
-            duration: context.read<Board>().isFinished
-                ? Duration(microseconds: 1)
-                : Duration(milliseconds: 1300),
-            decoration: BoxDecoration(
-                color: Color(0xFF00b38f),
-                border: Border.all(color: Theme.of(context).primaryColor)),
-            width: 35,
-            height: 35,
-          );
-        } else {
-          return AnimatedContainer(
-            duration: context.read<Board>().isFinished
-                ? Duration(microseconds: 1)
-                : Duration(milliseconds: 800),
-            decoration: BoxDecoration(
-                color: widget._node.visited ? Colors.black : Color(0xFF000066),
-                border: Border.all(color: Theme.of(context).primaryColor)),
-            width: 35,
-            height: 35,
-          );
-        }
+        return AnimatedContainer(
+          duration: Duration(milliseconds: 400),
+          decoration: BoxDecoration(
+              color: widget._node.isWall
+                  ? Theme.of(context).primaryColor
+                  : widget._node.isPath
+                      ? Color(0xFF00b38f)
+                      : widget._node.visited
+                          ? Colors.black
+                          : Color(0xFF000066),
+              border: Border.all(color: Theme.of(context).primaryColor)),
+          width: 35,
+          height: 35,
+        );
       });
     }
   }
