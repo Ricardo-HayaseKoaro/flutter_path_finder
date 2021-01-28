@@ -42,9 +42,18 @@ class _GridSquareState extends State<GridSquare> {
     if (widget._node.isStart) {
       return Draggable<Node>(
         data: widget._node,
+        onDragStarted: () {
+          widget._node.visited = false;
+        },
+        onDraggableCanceled: (_, __) {
+          widget._node.setStart(true);
+          widget.setStart(widget._node);
+          context.read<Board>().startPathFinding();
+        },
         childWhenDragging: Container(
           decoration: BoxDecoration(
-              color: Color(0xFF000066),
+              color:
+                  widget._node.visited ? Color(0xFF00b38f) : Color(0xFF000066),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
@@ -57,7 +66,9 @@ class _GridSquareState extends State<GridSquare> {
           height: 35,
           child: Icon(
             Icons.arrow_forward_ios,
-            color: Color(0xFF00b38f),
+            color: context.read<Board>().isFinished
+                ? Color(0xFF000066)
+                : Color(0xFF00b38f),
           ),
         ),
         child: Container(
@@ -75,9 +86,18 @@ class _GridSquareState extends State<GridSquare> {
     } else if (widget._node.isFinish) {
       return Draggable<Node>(
         data: widget._node,
+        onDragStarted: () {
+          widget._node.visited = false;
+        },
+        onDraggableCanceled: (_, __) {
+          widget._node.setFinish(true);
+          widget.setFinish(widget._node);
+          context.read<Board>().startPathFinding();
+        },
         childWhenDragging: Container(
           decoration: BoxDecoration(
-              color: Color(0xFF000066),
+              color:
+                  widget._node.visited ? Color(0xFF00b38f) : Color(0xFF000066),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
@@ -119,25 +139,29 @@ class _GridSquareState extends State<GridSquare> {
           widget._node.setStart(true);
           widget.setStart(widget._node);
         }
+        if (context.read<Board>().isFinished)
+          context.read<Board>().startPathFinding();
       }, onWillAccept: (node) {
         if (widget._node.isFinish || widget._node.isStart) {
           return false;
         }
         return true;
-      },
-          // onMove: (value) {
-          //   if (context.read<Board>().isFinished) {
-          //     dynamic node = value.data;
-          //     if (node.isFinish) {
-          //       widget.setFinish(widget._node);
-          //     }
-          //     if (node.isStart) {
-          //       widget.setStart(widget._node);
-          //     }
-          //     context.read<Board>().startPathFinding();
-          //   }
-          // },
-          builder: (context, candidates, rejects) {
+      }, onMove: (value) {
+        if (context.read<Board>().isFinished &&
+            widget._node != context.read<Board>().finish &&
+            widget._node != context.read<Board>().start) {
+          dynamic node = value.data;
+          if (node.isStart) {
+            widget.setStart(widget._node);
+            context.read<Board>().startPathFinding();
+          }
+          if (node.isFinish) {
+            // Dont set isFinish, isFinish is used for UI purposes only, if set will bug
+            widget.setFinish(widget._node);
+            context.read<Board>().startPathFinding();
+          }
+        }
+      }, builder: (context, candidates, rejects) {
         if (widget._node.isWall) {
           return Container(
               decoration: BoxDecoration(
@@ -158,6 +182,12 @@ class _GridSquareState extends State<GridSquare> {
           );
         } else {
           return AnimatedContainer(
+            // child: widget._node.visited
+            //     ? Text(
+            //         "AAA",
+            //         style: TextStyle(color: Colors.white),
+            //       )
+            //     : Text(""),
             duration: context.read<Board>().isFinished
                 ? Duration(microseconds: 1)
                 : Duration(milliseconds: 800),

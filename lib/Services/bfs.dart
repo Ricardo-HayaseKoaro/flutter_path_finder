@@ -12,7 +12,7 @@ class BFS {
   Future<void> startBFS() async {
     print("BFS");
     await _bfsAux(board.start).then((finishNode) async {
-      await _bfsShortestPath(finishNode);
+      // await _bfsShortestPath(finishNode);
     });
   }
 
@@ -32,7 +32,7 @@ class BFS {
       // visited and enqueue it
       for (Node item in _getNeighbors(auxNode)) {
         if (!item.visited && !item.isWall) {
-          if (item.isFinish) {
+          if (item == board.finish) {
             return item;
           }
           queue.add(item);
@@ -93,6 +93,6 @@ class BFS {
       }
     }
     minNode.setPath();
-    _bfsShortestPath(minNode);
+    await _bfsShortestPath(minNode);
   }
 }
