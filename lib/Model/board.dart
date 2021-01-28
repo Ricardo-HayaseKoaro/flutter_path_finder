@@ -70,6 +70,7 @@ class Board extends ChangeNotifier {
     for (var node in visitedNodes) {
       if (!node.isStart && !node.isFinish) node.clear();
     }
+    notifyListeners();
   }
 
   void clearBoard() {
@@ -79,6 +80,8 @@ class Board extends ChangeNotifier {
     for (var node in visitedNodes) {
       node.fullClear();
     }
+    this.isFinished = false;
+    notifyListeners();
   }
 
   startPathFinding() {
@@ -86,7 +89,6 @@ class Board extends ChangeNotifier {
     this.isRunning = true;
     notifyListeners();
 
-    this.isFinished = false;
     this.clearVisitedNodes();
     bfs = BFS(this);
     bfs.startBFS().then((_) {

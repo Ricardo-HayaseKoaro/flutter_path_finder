@@ -64,9 +64,12 @@ class _GridState extends State<Grid> {
                         final String mode = context.read<AddModel>().addMode;
                         switch (mode) {
                           case "wall":
-                            board.grid[i][j].changeWall();
-                            board.walls.add(board.grid[i][j]);
-                            break;
+                            if (!board.grid[i][j].isFinish &&
+                                !board.grid[i][j].isStart) {
+                              board.grid[i][j].changeWall();
+                              board.walls.add(board.grid[i][j]);
+                              break;
+                            }
                         }
                       },
                       onLongPress: () {

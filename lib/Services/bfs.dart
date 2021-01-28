@@ -12,7 +12,6 @@ class BFS {
   Future<void> startBFS() async {
     print("BFS");
     await _bfsAux(board.start).then((finishNode) async {
-      await Future.delayed(Duration(milliseconds: 400));
       await _bfsShortestPath(finishNode);
     });
   }
@@ -38,7 +37,8 @@ class BFS {
           }
           queue.add(item);
           board.visitedNodes.add(item);
-          await Future.delayed(Duration(microseconds: 1500));
+          if (!board.isFinished)
+            await Future.delayed(Duration(microseconds: 1500));
           item.setVisited(auxNode.val + 1);
         }
       }
@@ -92,7 +92,6 @@ class BFS {
         }
       }
     }
-    await Future.delayed(Duration(microseconds: 1500));
     minNode.setPath();
     _bfsShortestPath(minNode);
   }
