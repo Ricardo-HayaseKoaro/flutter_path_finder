@@ -33,9 +33,18 @@ class _GridState extends State<Grid> {
   // Algorythms for path finding
   BFS bfs;
 
+  //Controller for scrolls
+
+  ScrollController _scrollControllerVertical;
+  ScrollController _scrollControllerHorizontal;
+
   @override
   void initState() {
     super.initState();
+
+    //Create default position for scrolls
+    _scrollControllerVertical = new ScrollController();
+    _scrollControllerHorizontal = new ScrollController();
     context.read<Play>().addListener(() {
       if (context.read<Play>().isPlaying) {
         _clearVisitedNodes();
@@ -48,15 +57,22 @@ class _GridState extends State<Grid> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollControllerHorizontal
+          .jumpTo(_scrollControllerHorizontal.position.maxScrollExtent / 2);
+      _scrollControllerVertical
+          .jumpTo(_scrollControllerVertical.position.maxScrollExtent / 2);
+    });
+
     return InteractiveViewer(
       minScale: 0.1,
       maxScale: 3.0,
       child: Container(
         child: SingleChildScrollView(
-          // physics: const NeverScrollableScrollPhysics(),
+          controller: _scrollControllerHorizontal,
           scrollDirection: Axis.horizontal,
           child: SingleChildScrollView(
-            // physics: const NeverScrollableScrollPhysics(),
+            controller: _scrollControllerVertical,
             child: Row(
               children: List.generate(
                 rowCount,
@@ -107,6 +123,16 @@ class _GridState extends State<Grid> {
   void _initialiseBoard() {
     board = List.generate(rowCount, (i) {
       return List.generate(columnCount, (j) {
+        if (i == (rowCount / 2) - 4 && j == (columnCount / 2)) {
+          Node newNode = Node(x: i, y: j, isStart: true);
+          start = newNode;
+          return newNode;
+        }
+        if (i == (rowCount / 2) + 3 && j == (columnCount / 2)) {
+          Node newNode = Node(x: i, y: j, isFinish: true);
+          finish = newNode;
+          return newNode;
+        }
         return Node(x: i, y: j);
       });
     });
