@@ -54,8 +54,8 @@ class _GridSquareState extends State<GridSquare> {
           width: 35,
           height: 35,
           child: Icon(
-            Icons.flag,
-            color: Colors.green[600],
+            Icons.arrow_forward_ios,
+            color: Color(0xFF00b38f),
           ),
         ),
         child: Container(
@@ -65,8 +65,8 @@ class _GridSquareState extends State<GridSquare> {
           width: 35,
           height: 35,
           child: Icon(
-            Icons.flag,
-            color: Colors.green[600],
+            Icons.arrow_forward_ios,
+            color: Color(0xFF00b38f),
           ),
         ),
       );
@@ -93,7 +93,7 @@ class _GridSquareState extends State<GridSquare> {
           height: 35,
           child: Icon(
             Icons.flag,
-            color: Colors.red[600],
+            color: Color(0xFF00b38f),
           ),
         ),
         child: Container(
@@ -104,7 +104,7 @@ class _GridSquareState extends State<GridSquare> {
           height: 35,
           child: Icon(
             Icons.flag,
-            color: Colors.red[600],
+            color: Color(0xFF00b38f),
           ),
         ),
       );

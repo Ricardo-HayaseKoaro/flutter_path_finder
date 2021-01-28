@@ -9,24 +9,36 @@ class CustomAppBar extends AppBar {
             color: Colors.black, //change your color here
           ),
           backgroundColor: Theme.of(context).primaryColor,
-          title: Text(
-            "Path Finder",
-            style: TextStyle(color: Colors.white),
+          title: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: Icon(
+                  Icons.code,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+              Text(
+                "BFS Algorythm",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
           ),
           elevation: 0.0,
           automaticallyImplyLeading: false,
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 40.0),
+              padding: const EdgeInsets.only(right: 30.0),
               child: Consumer<Board>(builder: (context, board, child) {
                 return IconButton(
                   icon: Icon(
                     board.isFinished ? Icons.replay : Icons.play_arrow,
                     color: Colors.white,
-                    size: 35,
+                    size: 30,
                   ),
                   onPressed: () {
-                    board.startPathFinding();
+                    if (!board.isRunning) board.startPathFinding();
                   },
                 );
               }),

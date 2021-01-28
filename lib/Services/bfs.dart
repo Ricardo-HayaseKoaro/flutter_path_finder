@@ -9,19 +9,11 @@ class BFS {
 
   BFS(this.board);
 
-  void startBFS() {
+  Future<void> startBFS() async {
     print("BFS");
-    if (board.start == null) {
-      print("start null");
-      return;
-    }
-    if (board.finish == null) {
-      print("finish null");
-      return;
-    }
-    _bfsAux(board.start).then((finishNode) async {
+    await _bfsAux(board.start).then((finishNode) async {
       await Future.delayed(Duration(milliseconds: 400));
-      _bfsShortestPath(finishNode);
+      await _bfsShortestPath(finishNode);
     });
   }
 
@@ -51,6 +43,7 @@ class BFS {
         }
       }
     }
+    return null;
   }
 
   List<Node> _getNeighbors(node) {
@@ -74,8 +67,8 @@ class BFS {
     return neighbors;
   }
 
-//Find the shortest path from finish node to start node
-  void _bfsShortestPath(Node node) async {
+  //Find the shortest path from finish node to start node
+  Future<void> _bfsShortestPath(Node node) async {
     //Check if could find the finish node
     if (node == null) {
       print("Coulnd find the shortest path");

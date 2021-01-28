@@ -9,6 +9,7 @@ class Board extends ChangeNotifier {
 
   //Status (finished finding path)
   bool isFinished;
+  bool isRunning;
 
   // The board of squares
   List<List<Node>> grid;
@@ -30,6 +31,7 @@ class Board extends ChangeNotifier {
     this.rowCount = 20;
     this.columnCount = 30;
     this.isFinished = false;
+    this.isRunning = false;
     this.grid = List<List<Node>>();
     this.visitedNodes = List<Node>();
     this.walls = List<Node>();
@@ -80,11 +82,17 @@ class Board extends ChangeNotifier {
   }
 
   startPathFinding() {
+    //Disable run button
+    this.isRunning = true;
+    notifyListeners();
+
     this.isFinished = false;
     this.clearVisitedNodes();
     bfs = BFS(this);
-    bfs.startBFS();
-    this.isFinished = true;
-    notifyListeners();
+    bfs.startBFS().then((_) {
+      this.isFinished = true;
+      this.isRunning = false;
+      notifyListeners();
+    });
   }
 }
