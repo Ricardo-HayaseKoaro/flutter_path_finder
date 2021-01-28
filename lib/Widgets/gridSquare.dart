@@ -52,8 +52,7 @@ class _GridSquareState extends State<GridSquare> {
         },
         childWhenDragging: Container(
           decoration: BoxDecoration(
-              color:
-                  widget._node.visited ? Color(0xFF00b38f) : Color(0xFF000066),
+              color: widget._node.visited ? Colors.black : Color(0xFF000066),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
@@ -182,12 +181,6 @@ class _GridSquareState extends State<GridSquare> {
           );
         } else {
           return AnimatedContainer(
-            // child: widget._node.visited
-            //     ? Text(
-            //         "AAA",
-            //         style: TextStyle(color: Colors.white),
-            //       )
-            //     : Text(""),
             duration: context.read<Board>().isFinished
                 ? Duration(microseconds: 1)
                 : Duration(milliseconds: 800),

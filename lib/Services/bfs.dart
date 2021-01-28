@@ -11,16 +11,26 @@ class BFS {
 
   Future<void> startBFS() async {
     print("BFS");
-    await _bfsAux(board.start).then((finishNode) async {
-      // await _bfsShortestPath(finishNode);
+    await _bfsAux(board.start).then((predecessors) {
+      // Create shortes path in grid
+      Node aux = predecessors[board.finish];
+      while (aux != null) {
+        aux.setPath();
+        aux = predecessors[aux];
+      }
     });
   }
 
-  Future<Node> _bfsAux(Node node) async {
+  Future<HashMap<Node, Node>> _bfsAux(Node node) async {
+    List<Node> visited = board.visitedNodes;
+    HashMap<Node, Node> predecessor = HashMap();
+
     //Create queueu and add start node
     Queue queue = Queue();
     queue.add(node);
-    node.setVisited(0);
+    visited.add(node);
+    node.setVisited();
+    predecessor[node] = null;
 
     while (queue.isNotEmpty) {
       //Pop
@@ -33,13 +43,15 @@ class BFS {
       for (Node item in _getNeighbors(auxNode)) {
         if (!item.visited && !item.isWall) {
           if (item == board.finish) {
-            return item;
+            predecessor[item] = auxNode;
+            return predecessor;
           }
           queue.add(item);
-          board.visitedNodes.add(item);
+          visited.add(item);
           if (!board.isFinished)
             await Future.delayed(Duration(microseconds: 1500));
-          item.setVisited(auxNode.val + 1);
+          item.setVisited();
+          predecessor[item] = auxNode;
         }
       }
     }
@@ -65,34 +77,5 @@ class BFS {
       neighbors.add(board.grid[x][y + 1]);
     }
     return neighbors;
-  }
-
-  //Find the shortest path from finish node to start node
-  Future<void> _bfsShortestPath(Node node) async {
-    //Check if could find the finish node
-    if (node == null) {
-      print("Coulnd find the shortest path");
-      return;
-    }
-
-    // Base case
-    if (node.isStart) {
-      return;
-    }
-
-    //Search node with the min value
-    Node minNode;
-    for (Node item in _getNeighbors(node)) {
-      if (item.visited) {
-        // Needs to be visited
-        if (minNode == null) {
-          minNode = item;
-        } else {
-          if (item.val < minNode.val) minNode = item;
-        }
-      }
-    }
-    minNode.setPath();
-    await _bfsShortestPath(minNode);
   }
 }

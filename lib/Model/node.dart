@@ -20,9 +20,14 @@ class Node extends ChangeNotifier {
       @required this.x,
       @required this.y});
 
-  setVisited(int value) {
+  setVisitedValue(int value) {
     this.visited = true;
     this.val = value;
+    notifyListeners();
+  }
+
+  setVisited() {
+    this.visited = true;
     notifyListeners();
   }
 
