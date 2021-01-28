@@ -128,10 +128,6 @@ class _GridSquareState extends State<GridSquare> {
       }, builder: (context, candidates, rejects) {
         if (widget._node.isWall) {
           return AnimatedContainer(
-              child: Text(
-                widget._node.y.toString() + "," + widget._node.x.toString(),
-                style: TextStyle(color: Colors.white),
-              ),
               duration: Duration(microseconds: 2),
               decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
@@ -140,10 +136,6 @@ class _GridSquareState extends State<GridSquare> {
               height: 35);
         } else if (widget._node.isPath) {
           return AnimatedContainer(
-            child: Text(
-              widget._node.y.toString() + "," + widget._node.x.toString(),
-              style: TextStyle(color: Colors.white),
-            ),
             duration: Duration(milliseconds: 3000),
             decoration: BoxDecoration(
                 color: Color(0xFF00b38f),
@@ -153,10 +145,6 @@ class _GridSquareState extends State<GridSquare> {
           );
         } else {
           return AnimatedContainer(
-            child: Text(
-              widget._node.y.toString() + "," + widget._node.x.toString(),
-              style: TextStyle(color: Colors.white),
-            ),
             duration: Duration(milliseconds: 800),
             decoration: BoxDecoration(
                 color: widget._node.visited ? Colors.black : Color(0xFF000066),
