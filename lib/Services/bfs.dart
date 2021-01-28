@@ -1,35 +1,25 @@
 import 'dart:collection';
+import 'package:path_finder/Model/board.dart';
 import 'package:path_finder/Model/node.dart';
 import 'package:flutter/material.dart';
 
 class BFS {
   @required
-  int rowCount;
-  @required
-  int columnCount;
-  @required
-  Node start;
-  @required
-  Node finish;
-  @required
-  List<List<Node>> board;
-  @required
-  List<Node> visitedNodes;
+  Board board;
 
-  BFS(this.rowCount, this.columnCount, this.start, this.finish, this.board,
-      this.visitedNodes);
+  BFS(this.board);
 
   void startBFS() {
     print("BFS");
-    if (start == null) {
+    if (board.start == null) {
       print("start null");
       return;
     }
-    if (finish == null) {
+    if (board.finish == null) {
       print("finish null");
       return;
     }
-    _bfsAux(start).then((finishNode) async {
+    _bfsAux(board.start).then((finishNode) async {
       await Future.delayed(Duration(milliseconds: 400));
       _bfsShortestPath(finishNode);
     });
@@ -55,7 +45,7 @@ class BFS {
             return item;
           }
           queue.add(item);
-          visitedNodes.add(item);
+          board.visitedNodes.add(item);
           await Future.delayed(Duration(microseconds: 1500));
           item.setVisited(auxNode.val + 1);
         }
@@ -70,16 +60,16 @@ class BFS {
     List<Node> neighbors = List<Node>();
 
     if (x - 1 >= 0) {
-      neighbors.add(board[x - 1][y]);
+      neighbors.add(board.grid[x - 1][y]);
     }
-    if (x + 1 < rowCount) {
-      neighbors.add(board[x + 1][y]);
+    if (x + 1 < board.rowCount) {
+      neighbors.add(board.grid[x + 1][y]);
     }
     if (y - 1 >= 0) {
-      neighbors.add(board[x][y - 1]);
+      neighbors.add(board.grid[x][y - 1]);
     }
-    if (y + 1 < columnCount) {
-      neighbors.add(board[x][y + 1]);
+    if (y + 1 < board.columnCount) {
+      neighbors.add(board.grid[x][y + 1]);
     }
     return neighbors;
   }

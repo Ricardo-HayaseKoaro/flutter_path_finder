@@ -59,6 +59,7 @@ class Node extends ChangeNotifier {
     this.isPath = false;
     this.visited = false;
     this.val = 0;
+    notifyListeners();
   }
 
   fullClear() {

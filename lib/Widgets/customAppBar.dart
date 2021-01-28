@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:path_finder/Model/play.dart';
+import 'package:path_finder/Model/board.dart';
 import 'package:provider/provider.dart';
 
 class CustomAppBar extends AppBar {
@@ -18,15 +18,15 @@ class CustomAppBar extends AppBar {
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 40.0),
-              child: Consumer<Play>(builder: (context, play, child) {
+              child: Consumer<Board>(builder: (context, board, child) {
                 return IconButton(
                   icon: Icon(
-                    play.isPlaying ? Icons.pause : Icons.play_arrow,
+                    board.isFinished ? Icons.replay : Icons.play_arrow,
                     color: Colors.white,
-                    size: 40,
+                    size: 35,
                   ),
                   onPressed: () {
-                    play.changeState();
+                    board.startPathFinding();
                   },
                 );
               }),

@@ -7,13 +7,8 @@ class AddModel extends ChangeNotifier {
 
   String get addMode => _addMode;
 
-  setModeStart() {
-    _addMode = "start";
-    notifyListeners();
-  }
-
-  setModeFinish() {
-    _addMode = "finish";
+  setModeWeight() {
+    _addMode = "weight";
     notifyListeners();
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:path_finder/Model/addMode.dart';
+import 'package:path_finder/Model/board.dart';
 import 'package:provider/provider.dart';
 
 class FAB extends StatefulWidget {
@@ -24,17 +25,14 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
   // ignore: missing_return
   Icon _getIconButtonMode(String mode) {
     switch (mode) {
-      case "start":
-        return Icon(Icons.flag, color: Colors.green[600]);
-        break;
-      case "finish":
-        return Icon(Icons.flag, color: Colors.red[600]);
+      case "weight":
+        return Icon(Icons.fitness_center, color: Colors.white);
         break;
       case "wall":
         return Icon(Icons.view_column, color: Colors.white);
         break;
       default:
-        return Icon(Icons.add, color: Colors.white);
+        return Icon(Icons.clear, color: Colors.white);
         break;
     }
   }
@@ -108,10 +106,10 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
                         color: Theme.of(context).primaryColor,
                         width: 50,
                         height: 50,
-                        icon: _getIconButtonMode("start"),
+                        icon: _getIconButtonMode("wall"),
                         onClick: () {
-                          print('Start Mode');
-                          context.read<AddModel>().setModeStart();
+                          print('Wall Mode');
+                          context.read<AddModel>().setModeWall();
                         },
                       ),
                     ),
@@ -128,10 +126,10 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
                         color: Theme.of(context).primaryColor,
                         width: 50,
                         height: 50,
-                        icon: _getIconButtonMode("finish"),
+                        icon: _getIconButtonMode("weight"),
                         onClick: () {
-                          print('Finish Mode');
-                          context.read<AddModel>().setModeFinish();
+                          print('Finish Weight');
+                          context.read<AddModel>().setModeWeight();
                         },
                       ),
                     ),
@@ -148,10 +146,10 @@ class _FABState extends State<FAB> with SingleTickerProviderStateMixin {
                         color: Theme.of(context).primaryColor,
                         width: 50,
                         height: 50,
-                        icon: _getIconButtonMode("wall"),
+                        icon: _getIconButtonMode("clear"),
                         onClick: () {
-                          print('Wall Mode');
-                          context.read<AddModel>().setModeWall();
+                          print("Clear");
+                          context.read<Board>().clearBoard();
                         },
                       ),
                     ),
