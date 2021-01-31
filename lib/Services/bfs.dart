@@ -54,7 +54,7 @@ class BFS {
           }
           queue.add(item);
           visited.add(item);
-          if (!board.isFinished)
+          if (!board.isFinished && board.speed != 0)
             await Future.delayed(Duration(microseconds: 1500));
           item.setVisited();
           predecessor[item] = auxNode;

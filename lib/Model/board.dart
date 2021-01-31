@@ -11,6 +11,9 @@ class Board extends ChangeNotifier {
   bool isFinished;
   bool isRunning;
 
+  //Speed of animatiom
+  int speed;
+
   // The board of squares
   List<List<Node>> grid;
 
@@ -28,10 +31,11 @@ class Board extends ChangeNotifier {
   BFS bfs;
 
   Board() {
-    this.rowCount = 20;
+    this.rowCount = 40;
     this.columnCount = 30;
     this.isFinished = false;
     this.isRunning = false;
+    this.speed = 400;
     this.grid = List<List<Node>>();
     this.visitedNodes = List<Node>();
     this.walls = List<Node>();

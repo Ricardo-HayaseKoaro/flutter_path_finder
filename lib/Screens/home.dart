@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:path_finder/Model/addMode.dart';
 import 'package:path_finder/Model/board.dart';
-import 'package:path_finder/Widgets/circularButton.dart';
-import 'package:path_finder/Widgets/customAppBar.dart';
+import 'package:path_finder/Widgets/customFAB.dart';
+import 'package:path_finder/Widgets/navigationBar.dart';
 import 'package:provider/provider.dart';
 import '../Widgets/grid.dart';
 
@@ -29,13 +29,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
       child: Scaffold(
-        appBar: CustomAppBar(context),
-        body: Stack(
-          children: [
-            Grid(),
-            FAB(),
-          ],
+        backgroundColor: Color(0xFF000066),
+        appBar: AppBar(
+          title: Text("Path Finding"),
         ),
+        body: Align(
+          alignment: Alignment.center,
+          child: Stack(
+            children: [
+              Grid(),
+            ],
+          ),
+        ),
+        floatingActionButton: CustomFAB(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        bottomNavigationBar: CustomNavigationBar(),
       ),
     );
   }

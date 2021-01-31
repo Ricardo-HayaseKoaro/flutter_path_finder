@@ -69,9 +69,7 @@ class _GridSquareState extends State<GridSquare> {
           height: 35,
           child: Icon(
             Icons.arrow_forward_ios,
-            color: context.read<Board>().isFinished
-                ? Color(0xFF000066)
-                : Color(0xFF00b38f),
+            color: Color(0xFF000066),
           ),
         ),
         child: Container(
@@ -116,7 +114,7 @@ class _GridSquareState extends State<GridSquare> {
           height: 35,
           child: Icon(
             Icons.flag,
-            color: Color(0xFF00b38f),
+            color: Color(0xFF000066),
           ),
         ),
         child: Container(
@@ -173,7 +171,8 @@ class _GridSquareState extends State<GridSquare> {
         }
       }, builder: (context, candidates, rejects) {
         return AnimatedContainer(
-          duration: Duration(milliseconds: 400),
+          duration: Duration(
+              milliseconds: context.select<Board, int>((model) => model.speed)),
           decoration: BoxDecoration(
               color: widget._node.isWall
                   ? Theme.of(context).primaryColor
