@@ -9,6 +9,7 @@ class Node extends ChangeNotifier {
   bool isPath;
   int x;
   int y;
+  bool mazeVisited; // used to aux maze generator
 
   Node(
       {this.visited = false,
@@ -17,6 +18,7 @@ class Node extends ChangeNotifier {
       this.isFinish = false,
       this.isWall = false,
       this.isPath = false,
+      this.mazeVisited = false,
       @required this.x,
       @required this.y});
 
@@ -59,8 +61,14 @@ class Node extends ChangeNotifier {
     notifyListeners();
   }
 
+  setWall(bool value) {
+    this.isWall = value;
+    notifyListeners();
+  }
+
   // Do not clear walls
   clear() {
+    this.mazeVisited = false;
     this.isPath = false;
     this.visited = false;
     this.val = 0;
@@ -68,6 +76,7 @@ class Node extends ChangeNotifier {
   }
 
   fullClear() {
+    this.mazeVisited = false;
     this.isWall = false;
     this.val = 0;
     this.visited = false;

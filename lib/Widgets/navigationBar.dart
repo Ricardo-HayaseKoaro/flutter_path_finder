@@ -40,6 +40,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         });
         break;
       case 2:
+        if (!context.read<Board>().isRunning) this.board.startMazeGeneration();
         break;
       case 3:
         _showModalBottomSheet(context);

@@ -63,24 +63,24 @@ class _GridSquareState extends State<GridSquare> {
         ),
         feedback: Container(
           decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Color(0xFF00b38f),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
           child: Icon(
             Icons.arrow_forward_ios,
-            color: Color(0xFF000066),
+            color: Theme.of(context).primaryColor,
           ),
         ),
         child: Container(
           decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Color(0xFF00b38f),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
           child: Icon(
             Icons.arrow_forward_ios,
-            color: Color(0xFF00b38f),
+            color: Theme.of(context).primaryColor,
           ),
         ),
       );
@@ -108,24 +108,24 @@ class _GridSquareState extends State<GridSquare> {
         ),
         feedback: Container(
           decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Color(0xFF00b38f),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
           child: Icon(
             Icons.flag,
-            color: Color(0xFF000066),
+            color: Theme.of(context).primaryColor,
           ),
         ),
         child: Container(
           decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Color(0xFF00b38f),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
           child: Icon(
             Icons.flag,
-            color: Color(0xFF00b38f),
+            color: Theme.of(context).primaryColor,
           ),
         ),
       );

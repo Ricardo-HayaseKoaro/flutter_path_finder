@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_finder/Model/node.dart';
 import 'package:path_finder/Services/bfs.dart';
+import 'package:path_finder/Services/mazeRecursiveBacktracking.dart';
 
 class Board extends ChangeNotifier {
   // Grid size
@@ -19,6 +20,7 @@ class Board extends ChangeNotifier {
 
   //List of visited (Used with visited property of node, the property is used to makes easier to check when rendering)
   List<Node> visitedNodes;
+  List<Node> mazeVisitedNodes;
 
   // Walls in the grid
   List<Node> walls;
@@ -30,26 +32,31 @@ class Board extends ChangeNotifier {
   // Algorythms for path finding
   BFS bfs;
 
+  // Algorythms for maze generation
+  MazeRecursiveBacktracking mazeRecursiveBacktracking;
+
   Board() {
-    this.rowCount = 40;
-    this.columnCount = 30;
+    this.rowCount = 31;
+    this.columnCount = 21;
     this.isFinished = false;
     this.isRunning = false;
     this.speed = 400;
     this.grid = List<List<Node>>();
     this.visitedNodes = List<Node>();
+    this.mazeVisitedNodes = List<Node>();
     this.walls = List<Node>();
+    this.mazeRecursiveBacktracking = MazeRecursiveBacktracking(this);
   }
 
   void initialiseBoard() {
     grid = List.generate(rowCount, (i) {
       return List.generate(columnCount, (j) {
-        if (i == (rowCount / 2) - 4 && j == (columnCount / 2)) {
+        if (i == (rowCount ~/ 2) - 3 && j == (columnCount ~/ 2)) {
           Node newNode = Node(x: i, y: j, isStart: true);
           start = newNode;
           return newNode;
         }
-        if (i == (rowCount / 2) + 3 && j == (columnCount / 2)) {
+        if (i == (rowCount ~/ 2) + 3 && j == (columnCount ~/ 2)) {
           Node newNode = Node(x: i, y: j, isFinish: true);
           finish = newNode;
           return newNode;
@@ -84,6 +91,9 @@ class Board extends ChangeNotifier {
     for (var node in visitedNodes) {
       node.fullClear();
     }
+    for (var node in mazeVisitedNodes) {
+      node.fullClear();
+    }
     this.isFinished = false;
     notifyListeners();
   }
@@ -100,5 +110,17 @@ class Board extends ChangeNotifier {
       this.isRunning = false;
       notifyListeners();
     });
+  }
+
+  startMazeGeneration() {
+    //Disable run button
+    this.isRunning = true;
+    notifyListeners();
+
+    this.clearBoard();
+
+    mazeRecursiveBacktracking.startMazeGenaration();
+    this.isRunning = false;
+    notifyListeners();
   }
 }

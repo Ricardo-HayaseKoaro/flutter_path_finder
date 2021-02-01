@@ -12,7 +12,7 @@ class BFS {
   Future<void> startBFS() async {
     print("BFS");
     await _bfsAux(board.start).then((predecessors) {
-      _showPath(predecessors);
+      if (predecessors != null) _showPath(predecessors);
     });
   }
 
