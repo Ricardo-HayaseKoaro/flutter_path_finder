@@ -9,14 +9,15 @@ class MazeRecursiveBacktracking {
 
   MazeRecursiveBacktracking(this.board);
 
-  startMazeGenaration() {
+  Future<void> startMazeGenaration() async {
     print("Recursive backtracking maze");
     _fillWalls();
     Node node = _getFirstRandomNode();
-    _auxRecursiveBacktracking(node);
-    // Check if finish or start node is blocked by walls
-    _checkBlocked(board.start);
-    _checkBlocked(board.finish);
+    await _auxRecursiveBacktracking(node).then((_) {
+      // Check if finish or start node is blocked by walls
+      _checkBlocked(board.start);
+      _checkBlocked(board.finish);
+    });
   }
 
   _checkBlocked(Node node) {
@@ -32,13 +33,16 @@ class MazeRecursiveBacktracking {
     }
   }
 
-  _auxRecursiveBacktracking(Node node) {
+  Future<void> _auxRecursiveBacktracking(Node node) async {
     node.setWall(false);
     node.mazeVisited = true;
     Node adjacentNode = _getRandomAdjacentNode(node);
     while (adjacentNode != null) {
-      _auxRecursiveBacktracking(adjacentNode);
-      adjacentNode = _getRandomAdjacentNode(node);
+      await Future.delayed(Duration(milliseconds: board.speedMaze))
+          .then((_) async {
+        await _auxRecursiveBacktracking(adjacentNode);
+        adjacentNode = _getRandomAdjacentNode(node);
+      });
     }
   }
 

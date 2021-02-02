@@ -11,17 +11,21 @@ class BFS {
 
   Future<void> startBFS() async {
     print("BFS");
-    await _bfsAux(board.start).then((predecessors) {
-      if (predecessors != null) _showPath(predecessors);
+    await _bfsAux(board.start).then((predecessors) async {
+      if (predecessors != null) await _showPath(predecessors);
     });
   }
 
-  Future<void> _showPath(predecessors) {
+  _showPath(predecessors) async {
     // Create shortes path in grid
     if (board.finish != null) {
       Node aux = predecessors[board.finish];
       while (aux != null) {
-        if (aux != board.finish && aux != board.start) aux.setPath();
+        if (!board.isFinished)
+          await Future.delayed(Duration(milliseconds: board.speedPath));
+        if (aux != board.finish && aux != board.start) {
+          aux.setPath();
+        }
         aux = predecessors[aux];
       }
     }
@@ -54,8 +58,8 @@ class BFS {
           }
           queue.add(item);
           visited.add(item);
-          if (!board.isFinished && board.speed != 0)
-            await Future.delayed(Duration(microseconds: 1500));
+          if (!board.isFinished)
+            await Future.delayed(Duration(milliseconds: board.speedSearch));
           item.setVisited();
           predecessor[item] = auxNode;
         }

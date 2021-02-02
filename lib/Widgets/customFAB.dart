@@ -15,7 +15,9 @@ class _CustomFABState extends State<CustomFAB> {
     return FloatingActionButton(
       onPressed: () {
         if (!context.read<Board>().isRunning)
-          context.read<Board>().startPathFinding();
+          context.read<Board>().isFinished
+              ? context.read<Board>().startPathFindingAgain()
+              : context.read<Board>().startPathFinding();
       },
       child: context.watch<Board>().isFinished
           ? Icon(Icons.replay)

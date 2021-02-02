@@ -171,8 +171,17 @@ class _GridSquareState extends State<GridSquare> {
         }
       }, builder: (context, candidates, rejects) {
         return AnimatedContainer(
-          duration: Duration(
-              milliseconds: context.select<Board, int>((model) => model.speed)),
+          duration: widget._node.isWall //check if wall
+              ? Duration(
+                  // check if is generating maze, if not creating wall dos not have delay
+                  milliseconds: context
+                          .select<Board, bool>((model) => model.isRunning)
+                      ? context
+                          .select<Board, int>((model) => model.speedAnimation)
+                      : 1)
+              : Duration(
+                  milliseconds: context
+                      .select<Board, int>((model) => model.speedAnimation)),
           decoration: BoxDecoration(
               color: widget._node.isWall
                   ? Theme.of(context).primaryColor

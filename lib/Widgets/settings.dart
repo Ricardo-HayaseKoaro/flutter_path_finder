@@ -11,12 +11,18 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  double _speed;
+  double _speedSearch;
+  double _speedPath;
+  double _speedMaze;
+  double _speedAnimation;
 
   @override
   void initState() {
     super.initState();
-    _speed = widget.board.speed.roundToDouble();
+    _speedSearch = widget.board.speedSearch.roundToDouble();
+    _speedPath = widget.board.speedPath.roundToDouble();
+    _speedMaze = widget.board.speedMaze.roundToDouble();
+    _speedAnimation = widget.board.speedAnimation.roundToDouble();
   }
 
   @override
@@ -31,7 +37,7 @@ class _SettingsState extends State<Settings> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Speed",
+                  "Settings",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -39,28 +45,100 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20),
-            //   child: Align(
-            //       alignment: Alignment.centerLeft,
-            //       child: Text(
-            //         "Speed",
-            //         style: TextStyle(
-            //             color: Colors.white, fontWeight: FontWeight.bold),
-            //       )),
-            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Delay Search",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
+            ),
             Slider(
-              value: _speed,
+              value: _speedSearch,
               onChanged: (value) {
                 setState(() {
-                  _speed = value;
-                  widget.board.speed = value.toInt();
+                  _speedSearch = value;
+                  widget.board.speedSearch = value.toInt();
                 });
               },
-              label: _speed.round().toString() + " ms",
+              label: _speedSearch.round().toString() + " ms",
+              activeColor: Color(0xFF5900b3),
+              divisions: 5,
+              min: 0,
+              max: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Delay Path",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
+            ),
+            Slider(
+              value: _speedPath,
+              onChanged: (value) {
+                setState(() {
+                  _speedPath = value;
+                  widget.board.speedPath = value.toInt();
+                });
+              },
+              label: _speedPath.round().toString() + " ms",
+              activeColor: Color(0xFF5900b3),
+              divisions: 8,
+              min: 0,
+              max: 400,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Delay Maze",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
+            ),
+            Slider(
+              value: _speedMaze,
+              onChanged: (value) {
+                setState(() {
+                  _speedMaze = value;
+                  widget.board.speedMaze = value.toInt();
+                });
+              },
+              label: _speedMaze.round().toString() + " ms",
               activeColor: Color(0xFF5900b3),
               divisions: 10,
               min: 0,
+              max: 100,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Speed Animation",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
+            ),
+            Slider(
+              value: _speedAnimation,
+              onChanged: (value) {
+                setState(() {
+                  _speedAnimation = value;
+                  widget.board.speedAnimation = value.toInt();
+                });
+              },
+              label: _speedAnimation.round().toString() + " ms",
+              activeColor: Color(0xFF5900b3),
+              divisions: 10,
+              min: 1,
               max: 1000,
             ),
             // Align(

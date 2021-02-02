@@ -73,7 +73,7 @@ class _GridState extends State<Grid> {
                         }
                       },
                       onLongPress: () {
-                        board.clearBoard();
+                        if (!board.isRunning) board.clearBoard();
                       },
                     ),
                   ),

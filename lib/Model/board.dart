@@ -12,8 +12,11 @@ class Board extends ChangeNotifier {
   bool isFinished;
   bool isRunning;
 
-  //Speed of animatiom
-  int speed;
+  //Speed
+  int speedSearch;
+  int speedPath;
+  int speedMaze;
+  int speedAnimation;
 
   // The board of squares
   List<List<Node>> grid;
@@ -40,7 +43,10 @@ class Board extends ChangeNotifier {
     this.columnCount = 21;
     this.isFinished = false;
     this.isRunning = false;
-    this.speed = 400;
+    this.speedSearch = 1;
+    this.speedMaze = 10;
+    this.speedPath = 50;
+    this.speedAnimation = 400;
     this.grid = List<List<Node>>();
     this.visitedNodes = List<Node>();
     this.mazeVisitedNodes = List<Node>();
@@ -98,6 +104,23 @@ class Board extends ChangeNotifier {
     notifyListeners();
   }
 
+  void startPathFindingAgain() {
+    this.clearVisitedNodes();
+    this.isFinished = false;
+
+    //Disable run button
+    this.isRunning = true;
+    notifyListeners();
+
+    this.clearVisitedNodes();
+    bfs = BFS(this);
+    bfs.startBFS().then((_) {
+      this.isFinished = true;
+      this.isRunning = false;
+      notifyListeners();
+    });
+  }
+
   startPathFinding() {
     //Disable run button
     this.isRunning = true;
@@ -113,14 +136,17 @@ class Board extends ChangeNotifier {
   }
 
   startMazeGeneration() {
-    //Disable run button
-    this.isRunning = true;
-    notifyListeners();
+    if (!this.isRunning) {
+      //Disable run button
+      this.isRunning = true;
+      notifyListeners();
 
-    this.clearBoard();
+      this.clearBoard();
 
-    mazeRecursiveBacktracking.startMazeGenaration();
-    this.isRunning = false;
-    notifyListeners();
+      mazeRecursiveBacktracking.startMazeGenaration().then((_) {
+        this.isRunning = false;
+        notifyListeners();
+      });
+    }
   }
 }

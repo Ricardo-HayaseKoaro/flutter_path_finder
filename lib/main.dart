@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'Screens/home.dart';
+import 'package:device_preview/device_preview.dart';
 
-void main() {
-  runApp(MyApp());
-}
+// void main() {
+//   runApp(MyApp());
+// }
+
+void main() => runApp(
+      DevicePreview(
+        enabled: true,
+        builder: (context) => MyApp(), // Wrap your app
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -16,6 +24,8 @@ class MyApp extends StatelessWidget {
         primaryColorDark: Colors.black,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      locale: DevicePreview.locale(context), // Add the locale here
+      builder: DevicePreview.appBuilder,
       home: MyHomePage(),
     );
   }
