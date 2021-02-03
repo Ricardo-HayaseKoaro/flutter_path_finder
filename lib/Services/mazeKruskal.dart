@@ -6,93 +6,103 @@ import 'dart:math';
 class MazeKruskal {
   @required
   Board board;
-  List<List<Tree>> sets;
-  List<Map<String, Node>> listEdges;
+  List<List<String>> sets;
+  List<Node> walls;
 
   MazeKruskal(this.board) {
-    this.sets = List.generate(board.rowCount,
-        (i) => List.generate(board.columnCount, (j) => (Tree())));
-    this.listEdges = List<Map<String, Node>>();
+    this.sets = List.generate(
+        board.rowCount, (i) => List.generate(board.columnCount, (j) => ("")));
+    walls = List<Node>();
   }
 
   Future<void> startMazeGenaration() async {
     print("Kruskal maze");
     _fillWalls();
-    listEdges.shuffle();
-    while (listEdges.isNotEmpty) {
-      // Get random edge
-      Map<String, Node> randomEdge = listEdges.removeLast();
-      Node nodeV1 = randomEdge["v1"];
-      Node nodeV2 = randomEdge["v2"];
-      Node wall = randomEdge["wall"];
+    walls.shuffle();
+    while (walls.isNotEmpty) {
+      Node wall = walls.removeLast();
+      Map<String, Node> neighbors = _getNeighbors(wall);
+      Node south = neighbors["s"];
+      Node north = neighbors["n"];
+      Node west = neighbors["w"];
+      Node east = neighbors["e"];
+      String setNorth;
+      String setSouth;
+      String setWest;
+      String setEast;
+      String setWall = sets[wall.x][wall.y];
 
-      // Get each vertice his set
-      Tree set1 = sets[nodeV1.x][nodeV1.y];
-      Tree set2 = sets[nodeV2.x][nodeV2.y];
-      Tree set3 = sets[wall.x][wall.y];
+      if (north != null) setNorth = sets[north.x][north.y];
+      if (south != null) setSouth = sets[south.x][south.y];
+      if (west != null) setWest = sets[west.x][west.y];
+      if (east != null) setEast = sets[east.x][east.y];
 
-      if (!set1._isConnected(set2) &&
-          !set3._isConnected(set2) &&
-          !set3._isConnected(set1) &&
-          !wall.mazeVisited &&
-          !nodeV1.mazeVisited &&
-          !nodeV2.mazeVisited) {
-        //Connect both vertice
-        nodeV1.setWall(false);
-        nodeV2.setWall(false);
-        wall.setWall(false);
-        wall.mazeVisited = true;
-        nodeV1.mazeVisited = true;
-        nodeV2.mazeVisited = true;
-        set1._joinTree(set2);
-        set1._joinTree(set3);
+      if (setNorth != setSouth) {
+        if (north != null &&
+            south != null &&
+            !north.mazeVisited &&
+            !south.mazeVisited) {
+          wall.setWall(false);
+          north.setWall(false);
+          south.setWall(false);
+          _visitNeighbors(wall);
+          _visitNeighbors(north);
+          _visitNeighbors(south);
+          setSouth = setNorth;
+          setWall = setNorth;
+        }
+      } else if (setWest != setEast) {
+        if (east != null &&
+            west != null &&
+            !east.mazeVisited &&
+            !west.mazeVisited) {
+          wall.setWall(false);
+          east.setWall(false);
+          west.setWall(false);
+          _visitNeighbors(wall);
+          _visitNeighbors(east);
+          _visitNeighbors(west);
+          setEast = setWest;
+          setWall = setWest;
+        }
       }
     }
   }
 
-  //Return a list of maps that store edge vertice of node as key and wall between them as content of map
-  _getEdges(Node node) {
+  _visitNeighbors(Node node) {
+    board.grid[node.x][node.y].mazeVisited = true;
+    if (node.x + 1 < board.rowCount)
+      board.grid[node.x + 1][node.y].mazeVisited = true;
+    if (node.x - 1 >= 0) board.grid[node.x - 1][node.y].mazeVisited = true;
+    if (node.y + 1 < board.columnCount)
+      board.grid[node.x][node.y + 1].mazeVisited = true;
+    if (node.y - 1 >= 0) board.grid[node.x][node.y - 1].mazeVisited = true;
+  }
+
+  Map<String, Node> _getNeighbors(Node node) {
     int x = node.x;
     int y = node.y;
 
+    Map<String, Node> neighbors = Map<String, Node>();
+
     //get edges
-    if (x - 2 >= 0) {
-      Map<String, Node> map = Map<String, Node>();
-      Node vertice = board.grid[x - 2][y];
-      Node wall = board.grid[x - 1][y];
-      map["v1"] = node;
-      map["v2"] = vertice;
-      map["wall"] = wall;
-      listEdges.add(map);
+    if (x - 1 >= 0) {
+      Node vertice = board.grid[x - 1][y];
+      neighbors["s"] = vertice; //south cell
     }
-    if (x + 2 < board.rowCount) {
-      Map<String, Node> map = Map<String, Node>();
-      Node vertice = board.grid[x + 2][y];
-      Node wall = board.grid[x + 1][y];
-      map["v1"] = node;
-      map["v2"] = vertice;
-      map["wall"] = wall;
-      listEdges.add(map);
+    if (x + 1 < board.rowCount) {
+      Node vertice = board.grid[x + 1][y];
+      neighbors["n"] = vertice; //north cell
     }
-    if (y - 2 >= 0) {
-      Map<String, Node> map = Map<String, Node>();
-      Node vertice = board.grid[x][y - 2];
-      Node wall = board.grid[x][y - 1];
-      map["v1"] = node;
-      map["v2"] = vertice;
-      map["wall"] = wall;
-      listEdges.add(map);
+    if (y - 1 >= 0) {
+      Node vertice = board.grid[x][y - 1];
+      neighbors["w"] = vertice; //west cell
     }
-    if (y + 2 < board.columnCount) {
-      Map<String, Node> map = Map<String, Node>();
-      Node vertice = board.grid[x][y + 2];
-      Node wall = board.grid[x][y + 1];
-      map["v1"] = node;
-      map["v2"] = vertice;
-      map["wall"] = wall;
-      listEdges.add(map);
+    if (y + 1 < board.columnCount) {
+      Node vertice = board.grid[x][y + 1];
+      neighbors["e"] = vertice; //east cell
     }
-    return listEdges;
+    return neighbors;
   }
 
   // Fill the entire grid with walls and return the set of sets for each cell
@@ -102,8 +112,9 @@ class MazeKruskal {
         if (!node.isFinish && !node.isStart) {
           node.setWall(true);
           board.walls.add(node);
-          sets[node.x][node.y] = Tree();
-          _getEdges(node);
+          sets[node.x][node.y] =
+              "x" + node.x.toString() + "y" + node.y.toString();
+          walls.add(node);
         }
       }
     }
