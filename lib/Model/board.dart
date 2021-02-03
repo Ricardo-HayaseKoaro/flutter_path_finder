@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_finder/Model/node.dart';
 import 'package:path_finder/Services/bfs.dart';
-import 'package:path_finder/Services/mazeKruskal.dart';
+import 'package:path_finder/Services/mazePrim.dart';
 import 'package:path_finder/Services/mazeRecursiveBacktracking.dart';
 
 class Board extends ChangeNotifier {
@@ -38,11 +38,11 @@ class Board extends ChangeNotifier {
 
   // Algorythms for maze generation
   MazeRecursiveBacktracking mazeRecursiveBacktracking;
-  MazeKruskal mazeKruskal;
+  MazePrim mazePrim;
 
   Board() {
-    this.rowCount = 10;
-    this.columnCount = 10;
+    this.rowCount = 21;
+    this.columnCount = 21;
     this.isFinished = false;
     this.isRunning = false;
     this.speedSearch = 1;
@@ -54,7 +54,7 @@ class Board extends ChangeNotifier {
     this.mazeVisitedNodes = List<Node>();
     this.walls = List<Node>();
     this.mazeRecursiveBacktracking = MazeRecursiveBacktracking(this);
-    this.mazeKruskal = MazeKruskal(this);
+    this.mazePrim = MazePrim(this);
   }
 
   void initialiseBoard() {
@@ -146,7 +146,7 @@ class Board extends ChangeNotifier {
 
       this.clearBoard();
 
-      mazeKruskal.startMazeGenaration().then((_) {
+      mazePrim.startMazeGenaration().then((_) {
         this.isRunning = false;
         notifyListeners();
       });
