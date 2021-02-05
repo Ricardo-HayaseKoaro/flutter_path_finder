@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:path_finder/Model/node.dart';
 import 'package:path_finder/Services/bfs.dart';
+import 'package:path_finder/Services/dijkstra.dart';
 import 'package:path_finder/Services/mazePrim.dart';
 import 'package:path_finder/Services/mazeRecursiveBacktracking.dart';
+import 'package:path_finder/Services/mazeRecursiveDivision.dart';
 
 class Board extends ChangeNotifier {
   // Grid size
@@ -35,14 +37,16 @@ class Board extends ChangeNotifier {
 
   // Algorythms for path finding
   BFS bfs;
+  Dijkstra dijkstra;
 
   // Algorythms for maze generation
   MazeRecursiveBacktracking mazeRecursiveBacktracking;
   MazePrim mazePrim;
+  MazeRecursiveDivision mazeRecursiveDivision;
 
   Board() {
-    this.rowCount = 21;
-    this.columnCount = 21;
+    this.rowCount = 11;
+    this.columnCount = 11;
     this.isFinished = false;
     this.isRunning = false;
     this.speedSearch = 1;
@@ -53,8 +57,11 @@ class Board extends ChangeNotifier {
     this.visitedNodes = List<Node>();
     this.mazeVisitedNodes = List<Node>();
     this.walls = List<Node>();
+    // this.bfs = BFS(this);
+    // this.dijkstra = Dijkstra(this);
     this.mazeRecursiveBacktracking = MazeRecursiveBacktracking(this);
     this.mazePrim = MazePrim(this);
+    this.mazeRecursiveDivision = MazeRecursiveDivision(this);
   }
 
   void initialiseBoard() {
@@ -88,8 +95,9 @@ class Board extends ChangeNotifier {
 
   void clearVisitedNodes() {
     for (var node in visitedNodes) {
-      if (!node.isStart && !node.isFinish) node.clear();
+      node.clear();
     }
+    visitedNodes.clear();
     notifyListeners();
   }
 
@@ -103,11 +111,17 @@ class Board extends ChangeNotifier {
     for (var node in mazeVisitedNodes) {
       node.fullClear();
     }
+    visitedNodes.clear();
+    walls.clear();
+    mazeVisitedNodes.clear();
     this.isFinished = false;
     notifyListeners();
   }
 
   void startPathFindingAgain() {
+    this.dijkstra = Dijkstra(this);
+    this.bfs = BFS(this);
+
     this.clearVisitedNodes();
     this.isFinished = false;
 
@@ -115,9 +129,8 @@ class Board extends ChangeNotifier {
     this.isRunning = true;
     notifyListeners();
 
-    this.clearVisitedNodes();
-    bfs = BFS(this);
-    bfs.startBFS().then((_) {
+    dijkstra.start().then((_) {
+      print("cao");
       this.isFinished = true;
       this.isRunning = false;
       notifyListeners();
@@ -125,13 +138,16 @@ class Board extends ChangeNotifier {
   }
 
   startPathFinding() {
+    this.dijkstra = Dijkstra(this);
+    this.bfs = BFS(this);
+
     //Disable run button
     this.isRunning = true;
     notifyListeners();
 
     this.clearVisitedNodes();
-    bfs = BFS(this);
-    bfs.startBFS().then((_) {
+    dijkstra.start().then((_) {
+      print("end");
       this.isFinished = true;
       this.isRunning = false;
       notifyListeners();
@@ -146,7 +162,7 @@ class Board extends ChangeNotifier {
 
       this.clearBoard();
 
-      mazePrim.startMazeGenaration().then((_) {
+      mazeRecursiveDivision.startMazeGenaration().then((_) {
         this.isRunning = false;
         notifyListeners();
       });

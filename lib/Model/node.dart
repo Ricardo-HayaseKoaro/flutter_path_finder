@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class Node extends ChangeNotifier {
   bool visited;
-  int val;
+  int weight;
+  double distance;
   bool isStart;
   bool isFinish;
   bool isWall;
@@ -13,20 +14,15 @@ class Node extends ChangeNotifier {
 
   Node(
       {this.visited = false,
-      this.val = 0,
       this.isStart = false,
       this.isFinish = false,
+      this.distance = double.infinity,
+      this.weight = 0,
       this.isWall = false,
       this.isPath = false,
       this.mazeVisited = false,
       @required this.x,
       @required this.y});
-
-  setVisitedValue(int value) {
-    this.visited = true;
-    this.val = value;
-    notifyListeners();
-  }
 
   setVisited() {
     this.visited = true;
@@ -71,14 +67,14 @@ class Node extends ChangeNotifier {
     this.mazeVisited = false;
     this.isPath = false;
     this.visited = false;
-    this.val = 0;
+    this.distance = double.infinity;
     notifyListeners();
   }
 
   fullClear() {
     this.mazeVisited = false;
     this.isWall = false;
-    this.val = 0;
+    this.distance = double.infinity;
     this.visited = false;
     this.isPath = false;
     notifyListeners();

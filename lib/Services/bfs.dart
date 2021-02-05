@@ -9,7 +9,7 @@ class BFS {
 
   BFS(this.board);
 
-  Future<void> startBFS() async {
+  Future<void> start() async {
     print("BFS");
     await _bfsAux(board.start).then((predecessors) async {
       if (predecessors != null) await _showPath(predecessors);

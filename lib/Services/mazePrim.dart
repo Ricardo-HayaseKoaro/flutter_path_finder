@@ -27,7 +27,7 @@ class MazePrim {
   }
 
   Future<void> startMazeGenaration() async {
-    print("Kruskal maze");
+    print("Prim maze");
     // Fill the grid with walls
     _fillWalls();
 
@@ -70,7 +70,6 @@ class MazePrim {
 
   // Check if node is blocked by 4 walls and then remove one random wall
   _unlockNode(Node node) {
-    List<Node> frontier = List<Node>();
     int nWalls = 0;
     for (List<int> direction in immediateDirections..shuffle()) {
       int newX = node.x + direction[0];

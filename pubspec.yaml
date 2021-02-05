@@ -27,6 +27,7 @@ dependencies:
   provider: ^4.3.3
   bubble_bottom_bar: ^1.2.0
   device_preview: ^0.5.5
+  collection: ^1.14.13
 
 
   # The following adds the Cupertino Icons font to your application.
