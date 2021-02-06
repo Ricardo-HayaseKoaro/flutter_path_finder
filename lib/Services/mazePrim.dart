@@ -83,18 +83,6 @@ class MazePrim {
     }
   }
 
-  List<Node> _immediateFrontiersOf(Node node) {
-    List<Node> frontier = List<Node>();
-    for (List<int> direction in immediateDirections) {
-      int newX = node.x + direction[0];
-      int newY = node.y + direction[1];
-      if (_isValidPosition(newX, newY) && board.grid[newX][newY].isWall) {
-        frontier.add(board.grid[newX][newY]);
-      }
-    }
-    return frontier;
-  }
-
   _connectNodes(Node node, Node anotherNode) {
     int xBetweenNodes = ((node.x + anotherNode.x) ~/ 2);
     int yBetweenNodes = ((node.y + anotherNode.y) ~/ 2);

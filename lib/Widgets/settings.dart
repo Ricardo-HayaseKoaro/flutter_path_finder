@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:path_finder/Enums/mazeAlgorithm.dart';
+import 'package:path_finder/Enums/searchAlgorithm.dart';
 import 'package:path_finder/Model/board.dart';
 
 class Settings extends StatefulWidget {
@@ -15,6 +17,11 @@ class _SettingsState extends State<Settings> {
   double _speedMaze;
   double _speedAnimation;
   double _weightValue;
+  Map<SearchAlgorithm, String> searchAlgorithms;
+  Map<MazeAlgorithm, String> mazeAlgorithms;
+
+  SearchAlgorithm selectedSearch;
+  MazeAlgorithm selectedMaze;
 
   @override
   void initState() {
@@ -24,6 +31,17 @@ class _SettingsState extends State<Settings> {
     _speedMaze = widget.board.speedMaze.roundToDouble();
     _speedAnimation = widget.board.speedAnimation.roundToDouble();
     _weightValue = widget.board.weightValue.roundToDouble();
+    searchAlgorithms = {
+      SearchAlgorithm.BFS: "Breath-First-Search",
+      SearchAlgorithm.Dijkstra: "Dijsktra Algorithm",
+      SearchAlgorithm.AStar: "A* Algorithm",
+    };
+    mazeAlgorithms = {
+      MazeAlgorithm.RecursiveBacktracking: "Recursive Backtracking",
+      MazeAlgorithm.Prim: "Prim Algorithm",
+    };
+    selectedSearch = widget.board.selectedSearchAlgorithm;
+    selectedMaze = widget.board.selectedMazeAlgorithm;
   }
 
   @override
@@ -47,7 +65,95 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Search Algorithm",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+              child: DropdownButton<SearchAlgorithm>(
+                isExpanded: true,
+                items: searchAlgorithms
+                    .map((key, value) {
+                      return MapEntry(
+                          key,
+                          DropdownMenuItem<SearchAlgorithm>(
+                            value: key,
+                            child: Text(value),
+                          ));
+                    })
+                    .values
+                    .toList(),
+                value: selectedSearch,
+                style: TextStyle(color: Colors.white),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                dropdownColor: Colors.black,
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedSearch = newValue;
+                    widget.board.selectedSearchAlgorithm = selectedSearch;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Maze Generation Algorithm",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+              child: Align(
+                alignment: Alignment.center,
+                child: DropdownButton<MazeAlgorithm>(
+                  isExpanded: true,
+                  items: mazeAlgorithms
+                      .map((key, value) {
+                        return MapEntry(
+                            key,
+                            DropdownMenuItem<MazeAlgorithm>(
+                              value: key,
+                              child: Text(
+                                value,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ));
+                      })
+                      .values
+                      .toList(),
+                  value: selectedMaze,
+                  style: TextStyle(color: Colors.white),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  dropdownColor: Colors.black,
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedMaze = newValue;
+                      widget.board.selectedMazeAlgorithm = selectedMaze;
+                    });
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -71,7 +177,7 @@ class _SettingsState extends State<Settings> {
               max: 30,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -95,7 +201,7 @@ class _SettingsState extends State<Settings> {
               max: 100,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -119,7 +225,7 @@ class _SettingsState extends State<Settings> {
               max: 400,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -143,11 +249,11 @@ class _SettingsState extends State<Settings> {
               max: 100,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Speed Animation",
+                    "Delay Animation",
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   )),
@@ -166,25 +272,6 @@ class _SettingsState extends State<Settings> {
               min: 1,
               max: 1000,
             ),
-            // Align(
-            //   alignment: Alignment.centerRight,
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(right: 30),
-            //     child: RaisedButton.icon(
-            //       icon: Icon(Icons.save),
-            //       shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(0),
-            //           side: BorderSide(color: Color(0xFF5900b3))),
-            //       onPressed: () {
-            //         Navigator.of(context).pop();
-            //       },
-            //       color: Color(0xFF5900b3),
-            //       textColor: Colors.white,
-            //       label: Text("save".toUpperCase(),
-            //           style: TextStyle(fontSize: 14)),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

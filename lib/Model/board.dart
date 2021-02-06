@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:path_finder/Enums/mazeAlgorithm.dart';
+import 'package:path_finder/Enums/searchAlgorithm.dart';
 import 'package:path_finder/Model/node.dart';
 import 'package:path_finder/Services/aStar.dart';
 import 'package:path_finder/Services/bfs.dart';
@@ -42,12 +44,16 @@ class Board extends ChangeNotifier {
   Node start;
   Node finish;
 
-  // Algorythms for path finding
+  // Selected algorithms
+  SearchAlgorithm selectedSearchAlgorithm;
+  MazeAlgorithm selectedMazeAlgorithm;
+
+  // Algorithms for path finding
   BFS bfs;
   Dijkstra dijkstra;
   AStar aStar;
 
-  // Algorythms for maze generation
+  // Algorithms for maze generation
   MazeRecursiveBacktracking mazeRecursiveBacktracking;
   MazePrim mazePrim;
   MazeRecursiveDivision mazeRecursiveDivision;
@@ -73,6 +79,8 @@ class Board extends ChangeNotifier {
     this.mazeRecursiveBacktracking = MazeRecursiveBacktracking(this);
     this.mazePrim = MazePrim(this);
     this.mazeRecursiveDivision = MazeRecursiveDivision(this);
+    this.selectedMazeAlgorithm = MazeAlgorithm.RecursiveBacktracking;
+    this.selectedSearchAlgorithm = SearchAlgorithm.Dijkstra;
   }
 
   void initialiseBoard() {
@@ -133,34 +141,85 @@ class Board extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Used ontap of button retry (dont render instantnously)
   void startPathFindingAgain() {
     this.clearVisitedNodes();
     this.isFinished = false;
-
     //Disable run button
     this.isRunning = true;
     notifyListeners();
-
-    aStar.start().then((_) {
-      print("end");
-      this.isFinished = true;
-      this.isRunning = false;
-      notifyListeners();
-    });
+    switch (selectedSearchAlgorithm) {
+      case SearchAlgorithm.Dijkstra:
+        {
+          dijkstra.start().then((_) {
+            print("end");
+            this.isFinished = true;
+            this.isRunning = false;
+            notifyListeners();
+          });
+          break;
+        }
+      case SearchAlgorithm.BFS:
+        {
+          bfs.start().then((_) {
+            print("end");
+            this.isFinished = true;
+            this.isRunning = false;
+            notifyListeners();
+          });
+          break;
+        }
+      case SearchAlgorithm.AStar:
+        {
+          aStar.start().then((_) {
+            print("end");
+            this.isFinished = true;
+            this.isRunning = false;
+            notifyListeners();
+          });
+          break;
+        }
+    }
   }
 
   startPathFinding() {
     //Disable run button
     this.isRunning = true;
     notifyListeners();
-
     this.clearVisitedNodes();
-    aStar.start().then((_) {
-      print("end");
-      this.isFinished = true;
-      this.isRunning = false;
-      notifyListeners();
-    });
+
+    switch (selectedSearchAlgorithm) {
+      case SearchAlgorithm.Dijkstra:
+        {
+          dijkstra.start().then((_) {
+            print("end");
+            this.isFinished = true;
+            this.isRunning = false;
+            notifyListeners();
+          });
+          break;
+        }
+      case SearchAlgorithm.BFS:
+        {
+          bfs.start().then((_) {
+            print("end");
+            this.isFinished = true;
+            this.isRunning = false;
+            notifyListeners();
+          });
+          break;
+        }
+      case SearchAlgorithm.AStar:
+        {
+          aStar.start().then((_) {
+            print("end");
+            this.isFinished = true;
+            this.isRunning = false;
+            notifyListeners();
+          });
+          break;
+        }
+    }
   }
 
   startMazeGeneration() {
@@ -171,10 +230,24 @@ class Board extends ChangeNotifier {
 
       this.clearBoard();
 
-      mazeRecursiveDivision.startMazeGenaration().then((_) {
-        this.isRunning = false;
-        notifyListeners();
-      });
+      switch (selectedMazeAlgorithm) {
+        case MazeAlgorithm.RecursiveBacktracking:
+          {
+            mazeRecursiveBacktracking.startMazeGenaration().then((_) {
+              this.isRunning = false;
+              notifyListeners();
+            });
+            break;
+          }
+        case MazeAlgorithm.Prim:
+          {
+            mazePrim.startMazeGenaration().then((_) {
+              this.isRunning = false;
+              notifyListeners();
+            });
+            break;
+          }
+      }
     }
   }
 }
