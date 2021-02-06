@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:path_finder/Enums/addMode.dart';
 
 class AddModel extends ChangeNotifier {
-  String _addMode;
+  AddMode _addMode;
 
-  AddModel([this._addMode = "wall"]);
+  AddModel([this._addMode = AddMode.Wall]);
 
-  String get addMode => _addMode;
+  AddMode get addMode => _addMode;
 
   setModeWeight() {
-    _addMode = "weight";
+    _addMode = AddMode.Weight;
     notifyListeners();
   }
 
   setModeWall() {
-    _addMode = "wall";
+    _addMode = AddMode.Wall;
     notifyListeners();
   }
 }

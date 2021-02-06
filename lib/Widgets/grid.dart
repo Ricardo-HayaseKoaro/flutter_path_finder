@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_finder/Enums/addMode.dart';
 import 'package:path_finder/Model/addMode.dart';
 import 'package:path_finder/Model/board.dart';
 import 'package:path_finder/Widgets/gridSquare.dart';
@@ -61,15 +62,22 @@ class _GridState extends State<Grid> {
                         setFinish: board.setFinish,
                       ),
                       onTap: () {
-                        final String mode = context.read<AddModel>().addMode;
+                        final AddMode mode = context.read<AddModel>().addMode;
                         switch (mode) {
-                          case "wall":
+                          case AddMode.Wall:
                             if (!board.grid[i][j].isFinish &&
                                 !board.grid[i][j].isStart) {
                               board.grid[i][j].changeWall();
                               board.walls.add(board.grid[i][j]);
-                              break;
                             }
+                            break;
+                          case AddMode.Weight:
+                            if (!board.grid[i][j].isFinish &&
+                                !board.grid[i][j].isStart) {
+                              board.grid[i][j].changeWeight(board.weightValue);
+                              board.weights.add(board.grid[i][j]);
+                            }
+                            break;
                         }
                       },
                       onLongPress: () {

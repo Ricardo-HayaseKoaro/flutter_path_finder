@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_finder/Icons/maze_icons.dart';
 import 'package:path_finder/Model/board.dart';
 import 'package:path_finder/Model/node.dart';
 import 'package:provider/provider.dart';
@@ -171,7 +172,7 @@ class _GridSquareState extends State<GridSquare> {
         }
       }, builder: (context, candidates, rejects) {
         return AnimatedContainer(
-          duration: widget._node.isWall //check if wall
+          duration: widget._node.isWall || widget._node.isWeight //check if wall
               ? Duration(
                   // check if is generating maze, if not creating wall dos not have delay
                   milliseconds: context
@@ -189,10 +190,15 @@ class _GridSquareState extends State<GridSquare> {
                       ? Color(0xFF00b38f)
                       : widget._node.visited
                           ? Colors.black
-                          : Color(0xFF000066),
+                          : widget._node.isWeight
+                              ? Theme.of(context).primaryColor
+                              : Color(0xFF000066),
               border: Border.all(color: Theme.of(context).primaryColor)),
           width: 35,
           height: 35,
+          child: widget._node.isWeight
+              ? Icon(Maze.weight_icon, color: Color(0xFF000066))
+              : null,
         );
       });
     }

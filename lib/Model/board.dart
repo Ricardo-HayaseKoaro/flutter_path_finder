@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:path_finder/Model/node.dart';
+import 'package:path_finder/Services/aStar.dart';
 import 'package:path_finder/Services/bfs.dart';
 import 'package:path_finder/Services/dijkstra.dart';
 import 'package:path_finder/Services/mazePrim.dart';
@@ -31,6 +32,12 @@ class Board extends ChangeNotifier {
   // Walls in the grid
   List<Node> walls;
 
+  //Weights in the grid
+  List<Node> weights;
+
+  // Default value of weight
+  int weightValue;
+
   // Start and finish squates
   Node start;
   Node finish;
@@ -38,6 +45,7 @@ class Board extends ChangeNotifier {
   // Algorythms for path finding
   BFS bfs;
   Dijkstra dijkstra;
+  AStar aStar;
 
   // Algorythms for maze generation
   MazeRecursiveBacktracking mazeRecursiveBacktracking;
@@ -57,8 +65,11 @@ class Board extends ChangeNotifier {
     this.visitedNodes = List<Node>();
     this.mazeVisitedNodes = List<Node>();
     this.walls = List<Node>();
-    // this.bfs = BFS(this);
-    // this.dijkstra = Dijkstra(this);
+    this.weights = List<Node>();
+    this.weightValue = 15;
+    this.bfs = BFS(this);
+    this.dijkstra = Dijkstra(this);
+    this.aStar = AStar(this);
     this.mazeRecursiveBacktracking = MazeRecursiveBacktracking(this);
     this.mazePrim = MazePrim(this);
     this.mazeRecursiveDivision = MazeRecursiveDivision(this);
@@ -111,17 +122,18 @@ class Board extends ChangeNotifier {
     for (var node in mazeVisitedNodes) {
       node.fullClear();
     }
+    for (var node in weights) {
+      node.fullClear();
+    }
     visitedNodes.clear();
     walls.clear();
     mazeVisitedNodes.clear();
+    weights.clear();
     this.isFinished = false;
     notifyListeners();
   }
 
   void startPathFindingAgain() {
-    this.dijkstra = Dijkstra(this);
-    this.bfs = BFS(this);
-
     this.clearVisitedNodes();
     this.isFinished = false;
 
@@ -129,8 +141,8 @@ class Board extends ChangeNotifier {
     this.isRunning = true;
     notifyListeners();
 
-    dijkstra.start().then((_) {
-      print("cao");
+    aStar.start().then((_) {
+      print("end");
       this.isFinished = true;
       this.isRunning = false;
       notifyListeners();
@@ -138,15 +150,12 @@ class Board extends ChangeNotifier {
   }
 
   startPathFinding() {
-    this.dijkstra = Dijkstra(this);
-    this.bfs = BFS(this);
-
     //Disable run button
     this.isRunning = true;
     notifyListeners();
 
     this.clearVisitedNodes();
-    dijkstra.start().then((_) {
+    aStar.start().then((_) {
       print("end");
       this.isFinished = true;
       this.isRunning = false;

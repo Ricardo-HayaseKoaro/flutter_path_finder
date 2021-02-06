@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:path_finder/Model/board.dart';
-import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {
   Board board;
@@ -15,6 +14,7 @@ class _SettingsState extends State<Settings> {
   double _speedPath;
   double _speedMaze;
   double _speedAnimation;
+  double _weightValue;
 
   @override
   void initState() {
@@ -23,6 +23,7 @@ class _SettingsState extends State<Settings> {
     _speedPath = widget.board.speedPath.roundToDouble();
     _speedMaze = widget.board.speedMaze.roundToDouble();
     _speedAnimation = widget.board.speedAnimation.roundToDouble();
+    _weightValue = widget.board.weightValue.roundToDouble();
   }
 
   @override
@@ -50,6 +51,30 @@ class _SettingsState extends State<Settings> {
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
+                    "Weight Value",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )),
+            ),
+            Slider(
+              value: _weightValue,
+              onChanged: (value) {
+                setState(() {
+                  _weightValue = value;
+                  widget.board.weightValue = value.toInt();
+                });
+              },
+              label: _weightValue.round().toString() + " units",
+              activeColor: Color(0xFF5900b3),
+              divisions: 30,
+              min: 0,
+              max: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
                     "Delay Search",
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
@@ -65,9 +90,9 @@ class _SettingsState extends State<Settings> {
               },
               label: _speedSearch.round().toString() + " ms",
               activeColor: Color(0xFF5900b3),
-              divisions: 5,
+              divisions: 10,
               min: 0,
-              max: 5,
+              max: 100,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

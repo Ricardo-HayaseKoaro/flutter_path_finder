@@ -8,6 +8,7 @@ class Node extends ChangeNotifier {
   bool isFinish;
   bool isWall;
   bool isPath;
+  bool isWeight;
   int x;
   int y;
   bool mazeVisited; // used to aux maze generator
@@ -19,6 +20,7 @@ class Node extends ChangeNotifier {
       this.distance = double.infinity,
       this.weight = 0,
       this.isWall = false,
+      this.isWeight = false,
       this.isPath = false,
       this.mazeVisited = false,
       @required this.x,
@@ -34,6 +36,8 @@ class Node extends ChangeNotifier {
     this.isFinish = finish;
     this.isStart = false;
     this.isWall = false;
+    this.isWeight = false;
+    this.weight = 0;
     notifyListeners();
   }
 
@@ -42,6 +46,8 @@ class Node extends ChangeNotifier {
     this.isFinish = false;
     this.isStart = start;
     this.isWall = false;
+    this.isWeight = false;
+    this.weight = 0;
     notifyListeners();
   }
 
@@ -62,6 +68,15 @@ class Node extends ChangeNotifier {
     notifyListeners();
   }
 
+  changeWeight(int value) {
+    this.isWeight = !this.isWeight;
+    if (this.isWeight)
+      this.weight = value;
+    else
+      this.weight = 0;
+    notifyListeners();
+  }
+
   // Do not clear walls
   clear() {
     this.mazeVisited = false;
@@ -77,6 +92,8 @@ class Node extends ChangeNotifier {
     this.distance = double.infinity;
     this.visited = false;
     this.isPath = false;
+    this.isWeight = false;
+    this.weight = 0;
     notifyListeners();
   }
 }

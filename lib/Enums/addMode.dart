@@ -1,0 +1,1 @@
+enum AddMode { Wall, Weight }
