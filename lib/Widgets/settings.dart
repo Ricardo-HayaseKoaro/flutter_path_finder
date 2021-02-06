@@ -101,6 +101,8 @@ class _SettingsState extends State<Settings> {
                   setState(() {
                     selectedSearch = newValue;
                     widget.board.selectedSearchAlgorithm = selectedSearch;
+                    // BFS is unweighted so we need to delete the weights from the grid
+                    widget.board.clearBoard();
                   });
                 },
               ),

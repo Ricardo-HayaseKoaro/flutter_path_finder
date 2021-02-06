@@ -1,5 +1,6 @@
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:path_finder/Enums/searchAlgorithm.dart';
 import 'package:path_finder/Icons/maze_icons.dart';
 import 'package:path_finder/Model/addMode.dart';
 import 'package:path_finder/Model/board.dart';
@@ -21,6 +22,17 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
     super.initState();
     currentIndex = 0;
     this.board = context.read<Board>();
+    this.board.addListener(() {
+      if (this.board.selectedSearchAlgorithm == SearchAlgorithm.BFS) {
+        setState(() {
+          print('Wall Mode');
+          context.read<AddModel>().setModeWall();
+          currentIndex = 0;
+        });
+      } else {
+        setState(() {});
+      }
+    });
   }
 
   void changePage(int index) {
@@ -33,11 +45,15 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         });
         break;
       case 1:
-        setState(() {
-          print('Weight Mode');
-          context.read<AddModel>().setModeWeight();
-          currentIndex = index;
-        });
+        if (this.board.selectedSearchAlgorithm != SearchAlgorithm.BFS) {
+          setState(() {
+            print('Weight Mode');
+            context.read<AddModel>().setModeWeight();
+            currentIndex = index;
+          });
+        } else {
+          print("Weight not supported");
+        }
         break;
       case 2:
         if (!context.read<Board>().isRunning) this.board.startMazeGeneration();
@@ -92,7 +108,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             icon: Icon(
               Maze.weight_icon,
               size: 20,
-              color: Colors.white,
+              color: context.read<Board>().selectedSearchAlgorithm ==
+                      SearchAlgorithm.BFS
+                  ? Colors.grey
+                  : Colors.white,
             ),
             activeIcon: Icon(
               Maze.weight_icon,

@@ -59,8 +59,8 @@ class Board extends ChangeNotifier {
   MazeRecursiveDivision mazeRecursiveDivision;
 
   Board() {
-    this.rowCount = 11;
-    this.columnCount = 11;
+    this.rowCount = 31;
+    this.columnCount = 21;
     this.isFinished = false;
     this.isRunning = false;
     this.speedSearch = 1;
