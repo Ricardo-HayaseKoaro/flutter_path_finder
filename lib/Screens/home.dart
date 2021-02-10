@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         backgroundColor: Color(0xFF000066),
         appBar: AppBar(
-          title: Text("Path Finding"),
+          title: Text("Path Finder"),
         ),
         body: Align(
           alignment: Alignment.center,
