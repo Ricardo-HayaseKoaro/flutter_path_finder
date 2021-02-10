@@ -23,6 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
   
   provider: ^4.3.3
   bubble_bottom_bar: ^1.2.0
@@ -51,6 +54,10 @@ flutter:
     - family: Maze
       fonts:
       - asset: fonts/Maze.ttf
+  
+  assets:
+    - lang/en.json
+    - lang/pt.json
 
   uses-material-design: true
 

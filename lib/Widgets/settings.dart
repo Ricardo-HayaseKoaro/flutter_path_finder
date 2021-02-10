@@ -3,6 +3,8 @@ import 'package:path_finder/Enums/mazeAlgorithm.dart';
 import 'package:path_finder/Enums/searchAlgorithm.dart';
 import 'package:path_finder/Model/board.dart';
 
+import 'appLocalizations.dart';
+
 class Settings extends StatefulWidget {
   Board board;
   Settings(this.board, {Key key}) : super(key: key);
@@ -31,21 +33,25 @@ class _SettingsState extends State<Settings> {
     _speedMaze = widget.board.speedMaze.roundToDouble();
     _speedAnimation = widget.board.speedAnimation.roundToDouble();
     _weightValue = widget.board.weightValue.roundToDouble();
-    searchAlgorithms = {
-      SearchAlgorithm.BFS: "Breath-First-Search",
-      SearchAlgorithm.Dijkstra: "Dijsktra Algorithm",
-      SearchAlgorithm.AStar: "A* Algorithm",
-    };
-    mazeAlgorithms = {
-      MazeAlgorithm.RecursiveBacktracking: "Recursive Backtracking",
-      MazeAlgorithm.Prim: "Prim Algorithm",
-    };
+
     selectedSearch = widget.board.selectedSearchAlgorithm;
     selectedMaze = widget.board.selectedMazeAlgorithm;
   }
 
   @override
   Widget build(BuildContext context) {
+    searchAlgorithms = {
+      SearchAlgorithm.BFS: AppLocalizations.of(context).translate('bfs'),
+      SearchAlgorithm.Dijkstra:
+          AppLocalizations.of(context).translate('dijkstra'),
+      SearchAlgorithm.AStar: AppLocalizations.of(context).translate('a_star'),
+    };
+    mazeAlgorithms = {
+      MazeAlgorithm.RecursiveBacktracking:
+          AppLocalizations.of(context).translate('recursive_backtracking'),
+      MazeAlgorithm.Prim: AppLocalizations.of(context).translate('prim'),
+    };
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(10),
@@ -56,7 +62,7 @@ class _SettingsState extends State<Settings> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Settings",
+                  AppLocalizations.of(context).translate('settings'),
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -69,7 +75,7 @@ class _SettingsState extends State<Settings> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Search Algorithm",
+                  AppLocalizations.of(context).translate('search_algorithm'),
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
@@ -112,7 +118,7 @@ class _SettingsState extends State<Settings> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Maze Generation Algorithm",
+                  AppLocalizations.of(context).translate('maze_algorithm'),
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
@@ -159,7 +165,7 @@ class _SettingsState extends State<Settings> {
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Weight Value",
+                    AppLocalizations.of(context).translate('weight_value'),
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   )),
@@ -172,7 +178,8 @@ class _SettingsState extends State<Settings> {
                   widget.board.weightValue = value.toInt();
                 });
               },
-              label: _weightValue.round().toString() + " units",
+              label: _weightValue.round().toString() +
+                  AppLocalizations.of(context).translate('units'),
               activeColor: Color(0xFF5900b3),
               divisions: 30,
               min: 0,
@@ -183,7 +190,7 @@ class _SettingsState extends State<Settings> {
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Delay Search",
+                    AppLocalizations.of(context).translate('delay_search'),
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   )),
@@ -207,7 +214,7 @@ class _SettingsState extends State<Settings> {
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Delay Path",
+                    AppLocalizations.of(context).translate('delay_path'),
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   )),
@@ -231,7 +238,7 @@ class _SettingsState extends State<Settings> {
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Delay Maze",
+                    AppLocalizations.of(context).translate('delay_maze'),
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   )),
@@ -255,7 +262,7 @@ class _SettingsState extends State<Settings> {
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Delay Animation",
+                    AppLocalizations.of(context).translate('delay_ani'),
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   )),

@@ -1,0 +1,18 @@
+{
+    "walls":"Paredes",
+    "weights":"Pesos",
+    "settings": "Configuraçōes",
+    "weight_value": "Valor Peso",
+    "delay_search": "Delay Busca",
+    "delay_path": "Delay Menor Caminho",
+    "delay_maze": "Delay Labirinto",
+    "delay_ani": "Delay Animação",
+    "search_algorithm": "Algoritmo de Busca",
+    "maze_algorithm": "Algoritmo do Labirinto",
+    "dijkstra": "Algoritmo de Dijkstra",
+    "a_star": "Algoritmo A*",
+    "bfs": "Busca em Largura",
+    "recursive_backtracking": "Backtracking Recursivo",
+    "prim": "Algoritmo de Prim",
+    "units": "unidades"
+}

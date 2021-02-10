@@ -7,6 +7,8 @@ import 'package:path_finder/Model/board.dart';
 import 'package:provider/provider.dart';
 import 'package:path_finder/Widgets/settings.dart';
 
+import 'appLocalizations.dart';
+
 class CustomNavigationBar extends StatefulWidget {
   CustomNavigationBar({Key key}) : super(key: key);
 
@@ -100,7 +102,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
               color: Color(0xFF00b38f),
             ),
             title: Text(
-              "Walls",
+              AppLocalizations.of(context).translate('walls'),
               style: TextStyle(color: Colors.white),
             )),
         BubbleBottomBarItem(
@@ -119,7 +121,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
               color: Color(0xFF00b38f),
             ),
             title: Text(
-              "Weight",
+              AppLocalizations.of(context).translate('weights'),
               style: TextStyle(color: Colors.white),
             )),
         BubbleBottomBarItem(

@@ -1,0 +1,18 @@
+{
+    "walls":"Walls",
+    "weights":"Weights",
+    "settings": "Settings",
+    "weight_value": "Weight Value",
+    "delay_search": "Delay Search",
+    "delay_path": "Delay Path",
+    "delay_maze": "Delay Maze",
+    "delay_ani": "Delay Animation",
+    "search_algorithm": "Search Algorithm",
+    "maze_algorithm": "Maze Algorithm",
+    "dijkstra": "Dijkstra Algorithm",
+    "a_star": "A* Algorithm",
+    "bfs": "Breadth-First-Search",
+    "recursive_backtracking": "Recursive Backtracking",
+    "prim": "Prim Algorithm",
+    "units": "units"
+}
