@@ -1,6 +1,7 @@
 # Path Finder
 
 Flutter application for visualizing path-finding and maze generation algorithms.
+https://play.google.com/store/apps/details?id=com.path_finder
 
 
 ## Showcase
